@@ -1,0 +1,53 @@
+# Graficador - proyecto de ejemplo (.graf)
+# CURVAS UNIFORMES: Circunferencia, Elipse, Parabola, Hiperbola
+# Cada linea = un registro con pares clave=valor separados por espacios.
+# En [funciones] la clave expr= va al final (toma el resto de la linea).
+# Comentarios (#) y claves desconocidas se ignoran al importar.
+
+[funciones]
+visible=1 color=6 style=0 width=2 expr=x^2/50-2
+
+[puntos]
+x=150 y=100 visible=1 label=A
+x=100 y=150 visible=1 label=B
+x=300 y=100 visible=1 label=C
+x=500 y=100 visible=1 label=D
+
+[conexiones]
+from=0 to=1 enabled=1 color=0 style=0 width=2 showLabel=1
+
+[conicas]
+# 1) CIRCUNFERENCIA  (x-Xc)^2+(y-Yc)^2=R^2  [apuntes: C=(150,100) R=10]
+#    P0=1-R=-9 ; tabla Pk = -9,-6,-1, 6,-3, 8, 5 ; (0,R)=(150,110)
+#    fill: 0=contorno 1=cuerdas desde el centro 2=solido
+type=1 xc=150 yc=100 r=10 rx=8 ry=6 p=5 a=5 b=3 orient=0 alcance=25 color=1 width=1 fill=1 visible=1
+# 2) ELIPSE  (x-Xc)^2/Rx^2+(y-Yc)^2/Ry^2=1
+type=0 xc=100 yc=150 r=10 rx=8 ry=6 p=5 a=5 b=3 orient=0 alcance=25 color=2 width=1 fill=0 visible=1
+# 3) PARABOLA  (x-Xc)^2=4p(y-Yc)  orient: 0=arriba 1=abajo 2=derecha 3=izquierda
+#    p=5 -> foco (300,105), directriz y=95, P0=1-2p=-9
+type=2 xc=300 yc=100 r=10 rx=8 ry=6 p=5 a=5 b=3 orient=0 alcance=25 color=3 width=1 fill=0 visible=1
+# 4) HIPERBOLA  (x-Xc)^2/a^2-(y-Yc)^2/b^2=1  orient: 0=horizontal 1=vertical
+#    a=5 b=3 -> c=sqrt(34)=5.83 ; F1=(494.17,100) F2=(505.83,100)
+#    vertices (495,100) y (505,100) ; asintotas y-100 = +-0.6(x-500)
+type=3 xc=500 yc=100 r=10 rx=8 ry=6 p=5 a=5 b=3 orient=0 alcance=25 color=4 width=1 fill=0 visible=1
+
+[ddas]
+# Primitivas de salida: lineas por el metodo DDA (mismos casos de los apuntes)
+# Caso I +M<1 : A(10,30) B(25,40)  M=0.666
+xa=10 ya=30 xb=25 yb=40 color=1 width=2 visible=1
+# Caso 3 +M>1 : A(10,25) B(20,40)  M=1.5
+xa=10 ya=25 xb=20 yb=40 color=2 width=2 visible=1
+# M=0 horizontal : A(20,35) B(30,35)
+xa=20 ya=35 xb=30 yb=35 color=3 width=2 visible=1
+# M=Error vertical : A(35,27) B(35,22)
+xa=35 ya=27 xb=35 yb=22 color=4 width=2 visible=1
+
+[polys]
+# kind: 0=triangulo 1=rombo ; fill: 0=contorno 1=lineas(pivote) 2=solido
+# Triangulo relleno por lineas desde el vertice A (pivote)
+kind=0 n=3 pivot=0 fill=1 color=2 width=1 visible=1 x0=40 y0=20 x1=70 y1=20 x2=55 y2=50 x3=0 y3=0
+# Rombo relleno por lineas desde A
+kind=1 n=4 pivot=0 fill=1 color=5 width=1 visible=1 x0=90 y0=35 x1=110 y1=20 x2=130 y2=35 x3=110 y3=50
+
+[vista]
+ra=-10 rb=10 rn=2000 autoFit=1 viewMode=0 vx0=0 vx1=10000 vy0=0 vy1=10000 showGrid=1 showAxes=1 showLabels=1 showTicks=1 connectAll=1 darkCanvas=0 polyColor=1 polyStyle=0 polyWidth=2
