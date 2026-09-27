@@ -110,7 +110,7 @@ void recomputeSegs() {
                     r.tipo = "Recta vertical";
                 } else if (std::fabs(r.dy) < 1e-9) {
                     r.tipo = "Recta horizontal";
-                } else if (r.dy > 0.0) {
+                } else if (r.m > 0.0) {
                     r.tipo = "Recta creciente";
                 } else {
                     r.tipo = "Recta decreciente";
@@ -167,7 +167,7 @@ void recomputeSegs() {
                 r.tipo = "Recta vertical";
             } else if (std::fabs(r.dy) < 1e-9) {
                 r.tipo = "Recta horizontal";
-            } else if (r.dy > 0.0) {
+            } else if (r.m > 0.0) {
                 r.tipo = "Recta creciente";
             } else {
                 r.tipo = "Recta decreciente";
@@ -588,7 +588,7 @@ SegRes segBetween(const PointRow& a, const PointRow& b, const std::string& label
             r.tipo = "Recta vertical";
         } else if (std::fabs(r.dy) < 1e-9) {
             r.tipo = "Recta horizontal";
-        } else if (r.dy > 0.0) {
+        } else if (r.m > 0.0) {
             r.tipo = "Recta creciente";
         } else {
             r.tipo = "Recta decreciente";

@@ -1,40 +1,29 @@
-# ============================================================
-# Graficador Doker - archivo de proyecto (.graf)
-# Formato: texto plano, secciones [ ] y registros "clave=valor".
-# Este es el UNICO tipo de archivo que importa/exporta el programa.
-# Al abrirlo quedan cargados puntos, conexiones, conicas, DDA y vista.
-# ============================================================
+# Graficador - proyecto (.graf)
+# Cada linea = un registro con pares clave=valor.
+# En [funciones], la clave expr= va al final (toma el resto de la linea).
 
-# Cada linea: x= y= visible=0|1 label=ETIQUETA
-[puntos]
-x=25 y=40 visible=1 label=A
-x=20 y=36 visible=1 label=B
-x=15 y=34 visible=1 label=C
-x=15 y=10 visible=1 label=D
-x=30 y=10 visible=1 label=E
-
-# Cada linea: from= to= enabled=0|1 color=0-9 style=0-3 width=1-4 showLabel=0|1
-[conexiones]
-from=0 to=1 enabled=1 color=0 style=0 width=2 showLabel=1
-from=1 to=2 enabled=1 color=0 style=0 width=2 showLabel=1
-from=3 to=4 enabled=1 color=0 style=0 width=2 showLabel=1
-
-# Funciones: expr= SIEMPRE al final (toma el resto de la linea)
 [funciones]
 
-# type: 0=elipse 1=circunferencia 2=parabola 3=hiperbola
-# fill: 0=contorno 1=lineas 2=solido
+[puntos]
+x=25 y=40 visible=1 label=A
+x=24 y=39.3300018 visible=1 label=B
+x=23 y=38.6699982 visible=1 label=C
+x=22 y=38 visible=1 label=D
+x=21 y=37.3300018 visible=1 label=E
+x=20 y=36.6699982 visible=1 label=F
+x=19 y=35.9399986 visible=1 label=G
+x=18 y=36 visible=1 label=H
+x=17 y=35.3300018 visible=1 label=I
+x=16 y=34.6699982 visible=1 label=J
+x=15 y=34 visible=1 label=K
+
+[conexiones]
+
 [conicas]
-type=1 xc=10 yc=25 r=6 rx=8 ry=6 p=5 a=5 b=3 orient=0 alcance=25 color=1 width=1 fill=0 visible=1
 
-# Lineas por el metodo DDA
 [ddas]
-xa=10 ya=30 xb=25 yb=40 color=2 width=2 visible=1
 
-# kind: 0=triangulo 1=rombo ; pivot: 0=A 1=B 2=C 3=D
 [polys]
-kind=0 n=3 pivot=0 fill=1 color=3 width=1 visible=1 x0=35 y0=15 x1=55 y1=15 x2=45 y2=35 x3=0 y3=0
 
-# Configuracion de la vista
 [vista]
-ra=-10 rb=10 rn=2000 autoFit=1 viewMode=0 vx0=0 vx1=10000 vy0=0 vy1=10000 showGrid=1 showAxes=1 showLabels=1 showTicks=1 connectAll=1 darkCanvas=0 polyColor=1 polyStyle=0 polyWidth=2
+ra=-10 rb=10 rn=2000 autoFit=1 viewMode=0 vx0=0 vx1=10000 vy0=0 vy1=10000 showGrid=1 showAxes=1 showLabels=1 showTicks=1 connectAll=1 darkCanvas=0 polyColor=1 polyStyle=0 polyWidth=1
