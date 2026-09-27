@@ -110,7 +110,7 @@ void recomputeSegs() {
                     r.tipo = "Recta vertical";
                 } else if (std::fabs(r.dy) < 1e-9) {
                     r.tipo = "Recta horizontal";
-                } else if (r.m > 0.0) {
+                } else if (r.dy > 0.0) {
                     r.tipo = "Recta creciente";
                 } else {
                     r.tipo = "Recta decreciente";
@@ -167,7 +167,7 @@ void recomputeSegs() {
                 r.tipo = "Recta vertical";
             } else if (std::fabs(r.dy) < 1e-9) {
                 r.tipo = "Recta horizontal";
-            } else if (r.m > 0.0) {
+            } else if (r.dy > 0.0) {
                 r.tipo = "Recta creciente";
             } else {
                 r.tipo = "Recta decreciente";
@@ -569,6 +569,34 @@ void drawToolbar() {
 // =============================================================
 //  Tab: Puntos y Conexiones
 // =============================================================
+SegRes segBetween(const PointRow& a, const PointRow& b, const std::string& label) {
+    SegRes r;
+    r.label = label;
+    r.dx = static_cast<double>(b.x) - a.x;
+    r.dy = static_cast<double>(b.y) - a.y;
+    r.dist = std::hypot(r.dx, r.dy);
+    if (r.dist < 1e-9) {
+        r.degenerate = true;
+        r.m = 0.0;
+        r.thetaDeg = 0.0;
+        r.tipo = "Puntos coincidentes";
+    } else {
+        r.m = r.dy / r.dx;
+        r.thetaDeg = std::atan2(r.dy, r.dx) * 180.0 / 3.14159265358979323846;
+        if (std::fabs(r.dx) < 1e-9) {
+            r.vertical = true;
+            r.tipo = "Recta vertical";
+        } else if (std::fabs(r.dy) < 1e-9) {
+            r.tipo = "Recta horizontal";
+        } else if (r.dy > 0.0) {
+            r.tipo = "Recta creciente";
+        } else {
+            r.tipo = "Recta decreciente";
+        }
+    }
+    return r;
+}
+
 void pointsTab() {
     float availH = ImGui::GetContentRegionAvail().y;
     if (availH < 10.0f) return;
@@ -875,6 +903,59 @@ void pointsTab() {
         }
 
         ImGui::Unindent(8.0f);
+    }
+
+    // ==========================================================
+    //  Seccion: Resumen general del punto A al ultimo
+    // ==========================================================
+    if (ImGui::CollapsingHeader("Resumen total: punto A -> ultimo",
+                                ImGuiTreeNodeFlags_DefaultOpen)) {
+        if (g_gui.pts.size() < 2) {
+            ImGui::TextDisabled("  Se necesitan al menos 2 puntos.");
+        } else {
+            char la[16], lb[16];
+            guiPointLabel(0, la, sizeof(la));
+            guiPointLabel(static_cast<int>(g_gui.pts.size()) - 1, lb, sizeof(lb));
+            SegRes r = segBetween(g_gui.pts.front(), g_gui.pts.back(),
+                                  std::string(la) + " \xE2\x86\x92 " + lb);
+
+            ImVec2 sp = ImGui::GetCursorScreenPos();
+            ImGui::GetWindowDrawList()->AddRectFilled(
+                sp, ImVec2(sp.x + fullW - 16.0f, sp.y + 20.0f),
+                IM_COL32(236, 239, 245, 255), 3.0f);
+
+            ImGui::Indent(6.0f);
+            ImGui::TextColored(ImVec4(0.2f, 0.4f, 0.8f, 1.0f), "%s", r.label.c_str());
+            ImGui::Unindent(6.0f);
+
+            ImGui::Indent(12.0f);
+            if (r.degenerate) {
+                ImGui::TextColored(ImVec4(0.6f, 0.4f, 0.1f, 1.0f),
+                                   "Distancia = 0 (puntos coincidentes)");
+            } else {
+                ImGui::TextColored(ImVec4(0.3f, 0.3f, 0.35f, 1.0f),
+                    "\xCE\x94x = %.4g   \xCE\x94y = %.4g", r.dx, r.dy);
+
+                if (r.vertical) {
+                    ImGui::Text("Pendiente m = %s",
+                                g_gui.unicode ? "\xE2\x88\x9E" : "inf");
+                } else {
+                    ImGui::Text("Pendiente m = %.6g", r.m);
+                }
+
+                ImGui::Text("Angulo = %.2f%s", r.thetaDeg,
+                            g_gui.unicode ? "\xC2\xB0" : " grados");
+                ImGui::Text("Distancia = %.6g", r.dist);
+
+                ImVec4 tipocol = ImVec4(0.3f, 0.3f, 0.35f, 1.0f);
+                if (r.tipo == "Recta creciente") tipocol = ImVec4(0.1f, 0.5f, 0.2f, 1.0f);
+                else if (r.tipo == "Recta decreciente") tipocol = ImVec4(0.7f, 0.2f, 0.2f, 1.0f);
+                else if (r.tipo == "Recta horizontal") tipocol = ImVec4(0.2f, 0.4f, 0.8f, 1.0f);
+                else if (r.tipo == "Recta vertical") tipocol = ImVec4(0.5f, 0.2f, 0.7f, 1.0f);
+                ImGui::TextColored(tipocol, "%s", r.tipo.c_str());
+            }
+            ImGui::Unindent(12.0f);
+        }
     }
 
     ImGui::Spacing();
@@ -1365,14 +1446,14 @@ void guiBuild() {
         return;
     }
 
-    ImGui::Text("Graficador");
+    ImGui::Text("Graficador Doker");
     ImGui::SameLine(pw - 60.0f);
     ImGui::TextDisabled("H: ocultar");
 
     ImGui::Spacing();
 
     // --- Archivo: exportar / importar proyecto ---
-    ImGui::TextColored(ImVec4(0.3f, 0.3f, 0.35f, 1.0f), "ARCHIVO (.graf)");
+    ImGui::TextColored(ImVec4(0.3f, 0.3f, 0.35f, 1.0f), "ARCHIVO (.graf / .csv / .json)");
     ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
     ImGui::SetNextItemWidth(pw - 190.0f);
     ImGui::InputText("##path", g_gui.filePath, sizeof(g_gui.filePath));

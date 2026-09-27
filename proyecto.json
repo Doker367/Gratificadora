@@ -1,0 +1,25 @@
+{
+  "funciones": [],
+  "puntos": [
+    {"x": 25, "y": 40, "visible": true, "label": "A"},
+    {"x": 20, "y": 36, "visible": true, "label": "B"},
+    {"x": 15, "y": 34, "visible": true, "label": "C"},
+    {"x": 15, "y": 10, "visible": true, "label": "D"},
+    {"x": 30, "y": 10, "visible": true, "label": "E"}
+  ],
+  "conexiones": [
+    {"from": 0, "to": 1, "enabled": true, "color": 0, "style": 0, "width": 2, "showLabel": true},
+    {"from": 1, "to": 2, "enabled": true, "color": 0, "style": 0, "width": 2, "showLabel": true},
+    {"from": 3, "to": 4, "enabled": true, "color": 0, "style": 0, "width": 2, "showLabel": true}
+  ],
+  "conicas": [
+    {"type": 1, "xc": 10, "yc": 25, "r": 6, "rx": 8, "ry": 6, "p": 5, "a": 5, "b": 3, "orient": 0, "alcance": 25, "color": 1, "width": 1, "fill": 0, "visible": true}
+  ],
+  "ddas": [
+    {"xa": 10, "ya": 30, "xb": 25, "yb": 40, "color": 2, "width": 2, "visible": true}
+  ],
+  "polys": [
+    {"kind": 0, "n": 3, "pivot": 0, "fill": 1, "color": 3, "width": 1, "visible": true, "x": [35, 55, 45, 0], "y": [15, 15, 35, 0]}
+  ],
+  "vista": {"ra": -10, "rb": 10, "rn": 2000, "autoFit": true, "viewMode": 0, "vx0": 0, "vx1": 10000, "vy0": 0, "vy1": 10000, "showGrid": true, "showAxes": true, "showLabels": true, "showTicks": true, "connectAll": true, "darkCanvas": false, "polyColor": 1, "polyStyle": 0, "polyWidth": 2}
+}

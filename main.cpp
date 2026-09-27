@@ -931,7 +931,7 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 
-    g_app.window = glfwCreateWindow(1280, 800, "Graficador - GeoGebra",
+    g_app.window = glfwCreateWindow(1280, 800, "Graficador Doker",
                                     nullptr, nullptr);
     if (!g_app.window) {
         std::fprintf(stderr, "no se pudo crear la ventana GLFW\n");
